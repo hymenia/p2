@@ -4,6 +4,7 @@ uses
 {$ifdef UNIX}
 	CThreads,
 {$endif}
+	SysUtils,
 	P2.Config, P2.SQL, P2.HTTP;
 
 begin
@@ -25,5 +26,7 @@ begin
 		Halt(1);
 	end;
 
-	WriteLn('P2 is listening to port');
+	WriteLn('P2 is listening to :' + IntToStr(P2.Config.Table.WebPort));
+
+	P2.HTTP.Run();
 end.

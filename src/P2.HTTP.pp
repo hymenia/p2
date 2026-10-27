@@ -21,8 +21,7 @@ function StatusText(Code: Integer): String;
 implementation
 uses
 	Classes, SysUtils, Types,
-	P2.Application, P2.Config;
-
+	P2.Application, P2.Config, P2.HTTP.Router;
 
 const
 	C100Codes: Array[100..101] of String = (
@@ -125,6 +124,8 @@ begin
 		WriteLn('HTTP: ' + P2.Config.Table.WebMIMETypes + ': Not found');
 		Exit(False);
 	end;
+
+	P2.HTTP.Router.Init();
 end;
 
 procedure Run();
