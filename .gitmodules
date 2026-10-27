@@ -1,0 +1,6 @@
+[submodule "ext/altcha"]
+	path = ext/altcha
+	url = https://github.com/altcha-org/altcha-lib-cpp
+[submodule "ext/argon2"]
+	path = ext/argon2
+	url = https://github.com/P-H-C/phc-winner-argon2/
