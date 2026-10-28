@@ -2,7 +2,7 @@
 (
 	gen() {
 		for i in "$@"; do
-			if [ "$i" = "$1" -o "$i" = "$2" -o "$i" = "$3" -o "$i" = "$4" ]; then
+			if [ "$i" = "$1" -o "$i" = "$2" -o "$i" = "$3" ]; then
 				continue
 			fi	
 
@@ -24,6 +24,6 @@
 		echo
 	}
 
-	gen ARGON2 argon2 "-Iext/argon2/include" "" ext/argon2/src/*.c ext/argon2/src/blake2/*.c
-	gen ALTCHA altcha "-Iext/argon2/include" "lib/libargon2.a" ext/altcha/src/*.cpp
+	gen ARGON2 argon2 "-Iext/argon2/include" ext/argon2/src/*.c ext/argon2/src/blake2/*.c
+	gen ALTCHA altcha "-Iext/argon2/include -Iext/altcha/third_party" ext/altcha/src/*.cpp
 ) > gen.mk

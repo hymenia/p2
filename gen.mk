@@ -53,31 +53,31 @@ obj/argon2/blake2b.o: ext/argon2/src/blake2/blake2b.c
 	@mkdir -p obj/argon2
 	$(CC) $(CFLAGS) $(CPPFLAGS) -Iext/argon2/include -c -o $@ ext/argon2/src/blake2/blake2b.c
 
-lib/libargon2.a: $(ARGON2_OBJS) 
+lib/libargon2.a: $(ARGON2_OBJS) ext/argon2/src/argon2.c
 	@mkdir -p lib
 	$(AR) rcs $@ $(ARGON2_OBJS)
 
 ALTCHA_OBJS += obj/altcha/algorithms.o
 obj/altcha/algorithms.o: ext/altcha/src/algorithms.cpp
 	@mkdir -p obj/altcha
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -Iext/argon2/include -c -o $@ ext/altcha/src/algorithms.cpp
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -Iext/argon2/include -Iext/altcha/third_party -c -o $@ ext/altcha/src/algorithms.cpp
 
 ALTCHA_OBJS += obj/altcha/altcha.o
 obj/altcha/altcha.o: ext/altcha/src/altcha.cpp
 	@mkdir -p obj/altcha
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -Iext/argon2/include -c -o $@ ext/altcha/src/altcha.cpp
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -Iext/argon2/include -Iext/altcha/third_party -c -o $@ ext/altcha/src/altcha.cpp
 
 ALTCHA_OBJS += obj/altcha/helpers.o
 obj/altcha/helpers.o: ext/altcha/src/helpers.cpp
 	@mkdir -p obj/altcha
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -Iext/argon2/include -c -o $@ ext/altcha/src/helpers.cpp
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -Iext/argon2/include -Iext/altcha/third_party -c -o $@ ext/altcha/src/helpers.cpp
 
 ALTCHA_OBJS += obj/altcha/json_utils.o
 obj/altcha/json_utils.o: ext/altcha/src/json_utils.cpp
 	@mkdir -p obj/altcha
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -Iext/argon2/include -c -o $@ ext/altcha/src/json_utils.cpp
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -Iext/argon2/include -Iext/altcha/third_party -c -o $@ ext/altcha/src/json_utils.cpp
 
-lib/libaltcha.a: $(ALTCHA_OBJS) lib/libargon2.a
+lib/libaltcha.a: $(ALTCHA_OBJS) ext/altcha/src/algorithms.cpp
 	@mkdir -p lib
 	$(AR) rcs $@ $(ALTCHA_OBJS)
 

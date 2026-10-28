@@ -7,6 +7,12 @@ uses
 	SysUtils,
 	P2.Config, P2.SQL, P2.HTTP;
 
+{$linklib libstdc++.a}
+{$linklib libgcc.a}
+{$linklib libargon2.a}
+{$linklib libaltcha.a}
+{$linklib libcrypto.a}
+
 begin
 	if not(P2.Config.Init()) then
 	begin
