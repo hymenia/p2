@@ -26,4 +26,5 @@
 
 	gen ARGON2 argon2 "-Iext/argon2/include" ext/argon2/src/*.c ext/argon2/src/blake2/*.c
 	gen ALTCHA altcha "-Iext/argon2/include -Iext/altcha/third_party" ext/altcha/src/*.cpp
+	gen P2 p2 "-Iext/altcha/include" src/cxx/*.cc
 ) > gen.mk
