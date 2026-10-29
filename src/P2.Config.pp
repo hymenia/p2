@@ -72,7 +72,7 @@ end;
 
 procedure EndConfig();
 begin
-	if Assigned(Table) then Table.Destroy();
+	if Assigned(Table) then Table.Free();
 end;
 
 finalization

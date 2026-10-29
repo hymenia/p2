@@ -11,11 +11,12 @@ procedure RouteNormal(Req: TRequest; Res: TResponse);
 implementation
 uses
 	HTTPRoute,
-	P2.HTTP;
+	P2.HTTP, P2.HTTP.Router.APIv2;
 
 procedure Init();
 begin
 	HTTPRouter.RegisterRoute('/', @RouteNormal, True);
+	P2.HTTP.Router.APIv2.Init();
 end;
 
 procedure Route404(Req: TRequest; Res: TResponse);
