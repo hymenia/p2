@@ -25,3 +25,14 @@ extern "C" char* p2_altcha_challenge(const char* algorithm, int cost, const char
 	altcha::Challenge ch = altcha::createChallenge(opts);
 	return p2_strdup(altcha::challengeToJson(ch).c_str());
 }
+
+extern "C" int p2_altcha_verify(const char* challenge, const char* solution, const char* secret){
+	altcha::Challenge ch = altcha::challengeFromJson(challenge);
+	altcha::Solution sol = altcha::solutionFromJson(solution);
+	altcha::VerifyResult result = altcha::verifySolution(ch, sol, secret);
+
+	if(result.verified) return 0;
+	if(result.expired) return 1;
+	if(result.invalidSignature) return 2;
+	return 3;
+}
