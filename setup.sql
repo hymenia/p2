@@ -7,8 +7,11 @@ CREATE TABLE IF NOT EXISTS users (
 	id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 	username VARCHAR(30) NOT NULL,
 	password_hash TEXT NOT NULL,
+	host TEXT,
+	email TEXT,
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+	verified_at TIMESTAMPTZ,
 	public_key TEXT NOT NULL,
 	private_key TEXT NOT NULL
 );

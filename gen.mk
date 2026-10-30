@@ -81,12 +81,12 @@ lib/libaltcha.a: $(ALTCHA_OBJS) ext/altcha/src/algorithms.cpp
 	@mkdir -p lib
 	$(AR) rcs $@ $(ALTCHA_OBJS)
 
-P2_OBJS += obj/p2/*.o
-obj/p2/*.o: src/cxx/*.cc
+P2_OBJS += obj/p2/altcha.o
+obj/p2/altcha.o: src/cxx/altcha.cc
 	@mkdir -p obj/p2
-	$(CC) $(CFLAGS) $(CPPFLAGS) -Iext/altcha/include -c -o $@ src/cxx/*.cc
+	$(CC) $(CFLAGS) $(CPPFLAGS) -Iext/altcha/include -c -o $@ src/cxx/altcha.cc
 
-lib/libp2.a: $(P2_OBJS) src/cxx/*.cc
+lib/libp2.a: $(P2_OBJS) src/cxx/altcha.cc
 	@mkdir -p lib
 	$(AR) rcs $@ $(P2_OBJS)
 
