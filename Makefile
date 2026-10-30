@@ -1,5 +1,5 @@
 PC = fpc
-PCFLAGS = -Mobjfpc -Sh -FUobj -Fllib `pkg-config --libs-only-L libcrypto | sed s/-L/-Fl/`
+PCFLAGS = -Mobjfpc -Sh -FUobj -Fuext/bcrypt/src -Fllib `pkg-config --libs-only-L libcrypto | sed s/-L/-Fl/`
 
 AR = ar
 

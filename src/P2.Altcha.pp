@@ -7,7 +7,9 @@ unit P2.Altcha;
 
 interface
 type
+{$scopedenums on}
 	TVerify = (Verified = 0, Expired, InvalidSignature, InvalidSolution);
+{$scopedenums off}
 
 function Challenge(): String;
 function Verify(Challenge: String; Solution: String): TVerify;

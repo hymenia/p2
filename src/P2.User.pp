@@ -13,7 +13,7 @@ var
 	Trans: P2.SQL.TTransaction;
 	Query: P2.SQL.TQuery;
 begin
-	Create := False;
+	Create := True;
 
 	KeyPair := P2.Crypto.CreateKeyPair();
 
@@ -22,10 +22,15 @@ begin
 	Query := Trans.CreateQuery('INSERT INTO users (username, email, password_hash, public_key, private_key) VALUES (:username, :email, :password_hash, :public_key, :private_key)');
 	Query.ParamByName('username').AsString := UserName;
 	Query.ParamByName('email').AsString := Email;
-	Query.ParamByName('password_hash').AsString := 'ok';
+	Query.ParamByName('password_hash').AsString := P2.Crypto.Hash(Password);
 	Query.ParamByName('public_key').AsString := KeyPair.PublicKey;
 	Query.ParamByName('private_key').AsString := KeyPair.PrivateKey;
-	Query.ExecSQL();
+
+	try
+		Query.ExecSQL();
+	except
+		Create := False;
+	end;
 	Query.Free();
 
 	Trans.Commit();

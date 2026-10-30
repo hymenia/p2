@@ -45,13 +45,16 @@ begin
 		Altcha := JReq.Objects['altcha'];
 		Verify := P2.Altcha.Verify(Altcha.Objects['challenge'].AsJSON, Altcha.Objects['solution'].AsJSON);
 
-		if Verify = P2.Altcha.Verified then
+		if Verify = P2.Altcha.TVerify.Verified then
 		begin
 			if P2.User.Create(JReq.Strings['username'], JReq.Strings['email'], JReq.Strings['password']) then
 			begin
+				JObj.Strings['message'] := 'Registration successful';
 			end
 			else
 			begin
+				JObj.Strings['error'] := 'Username already registered';
+				P2.HTTP.SetStatus(Res, 409);
 			end;
 		end
 		else

@@ -10,10 +10,12 @@ type
 	end;
 
 function CreateKeyPair(KeyType: String = 'Ed25519'): TKeyPair;
+function Hash(Password: String): String;
 
 implementation
 uses
-	CTypes, SysUtils;
+	CTypes, SysUtils,
+	BCrypt, BCrypt.Types;
 
 function EVP_PKEY_CTX_new_from_name(libctx: Pointer; name: PChar; propquery: PChar): Pointer; cdecl; external name 'EVP_PKEY_CTX_new_from_name';
 function EVP_PKEY_keygen_init(ctx: Pointer): CInt; cdecl; external name 'EVP_PKEY_keygen_init';
@@ -58,6 +60,12 @@ begin
 
 	EVP_PKEY_CTX_free(PKeyCtx);
 	EVP_PKEY_free(PKey);
+end;
+
+// TODO: Argon2id?
+function Hash(Password: String): String;
+begin
+	Hash := TBCrypt.GenerateHash(Password, 10, BCrypt.Types.THashType.PHP);
 end;
 
 end.
