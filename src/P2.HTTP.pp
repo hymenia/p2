@@ -16,6 +16,7 @@ var
 function Init(): Boolean;
 procedure Run();
 function SetContent(Res: TResponse; Path: String): Boolean;
+procedure SetStatus(Res: TResponse; Code: Integer);
 function StatusText(Code: Integer): String;
 
 implementation
@@ -158,6 +159,12 @@ begin
 	except
 		Exit(False);
 	end;
+end;
+
+procedure SetStatus(Res: TResponse; Code: Integer);
+begin
+	Res.Code := Code;
+	Res.CodeText := StatusText(Code);
 end;
 
 function StatusText(Code: Integer): String;

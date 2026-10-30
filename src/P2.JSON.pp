@@ -8,22 +8,44 @@ procedure Expect(JObj: TJSONObject; Key: String; JSONType: TJSONType);
 
 implementation
 uses
-	SysUtils, TypInfo;
+	StrUtils, SysUtils, Types, TypInfo;
 
 procedure Expect(JObj: TJSONObject; Key: String; JSONType: TJSONType);
 var
 	JKey: TJSONData;
+	JKeyObj: TJSONObject;
+	Keys: TStringDynArray;
+	I: Integer;
+	Cond: Boolean;
 begin
-	JKey := JObj.Find(Key);
+	Keys := SplitString(Key, '.');
 
-	if Not(Assigned(JKey)) then
-	begin
-		Raise(Exception.Create('Expected key ''' + Key + ''' but was not found'));
-	end;
+	JKeyObj := JObj;
 
-	if Not(JKey.JSONType = JSONType) then
-		Raise(Exception.Create('Expected type ''' + GetEnumName(TypeInfo(TJSONType), Ord(JSONType)) + ''' for key ''' + Key + ''' but was ''' + GetEnumName(TypeInfo(TJSONType), Ord(JKey.JSONType)) + ''''));
+	for I := Low(Keys) to High(Keys) do
 	begin
+		JKey := JKeyObj.Find(Keys[I]);
+
+		if Not(Assigned(JKey)) then
+		begin
+			Raise(Exception.Create('Expected key ''' + Key + ''' but was not found'));
+		end;
+
+		if I = High(Keys) then
+		begin
+			Cond := JKey.JSONType = JSONType;
+		end
+		else
+		begin
+			Cond := JKey.JSONType = jtObject;
+		end;
+
+		if Not(Cond) then
+		begin
+			Raise(Exception.Create('Expected type ''' + GetEnumName(TypeInfo(TJSONType), Ord(JSONType)) + ''' for key ''' + Key + ''' but was ''' + GetEnumName(TypeInfo(TJSONType), Ord(JKey.JSONType)) + ''''));
+		end;
+
+		JKeyObj := TJSONObject(JKey);
 	end;
 end;
 

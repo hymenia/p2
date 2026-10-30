@@ -27,7 +27,7 @@ type
 
 procedure TApplicationWebHandler.EndRequest(Req: TRequest; Res: TResponse);
 begin
-	Application.Log(etInfo, Req.Method + ' ' + Req.URL + ' ' + IntToStr(Res.Code));
+	Application.Log(etInfo, Req.Method + ' ' + Req.URL + ' ' + IntToStr(Res.Code) + ' ' + Res.CodeText);
 
 	Inherited;
 end;
