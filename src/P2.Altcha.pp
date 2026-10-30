@@ -1,9 +1,9 @@
 unit P2.Altcha;
 
-{$linklib libargon2.a}
-{$linklib libaltcha.a}
-{$linklib libp2.a}
-{$linklib libcrypto.so}
+{$linklib p2}
+{$linklib altcha}
+{$linklib argon2}
+{$linklib crypto}
 
 interface
 type

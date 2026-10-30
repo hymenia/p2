@@ -6,12 +6,19 @@ uses
 	SQLDB;
 
 type
+	TQuery = class(TSQLQuery)
+	public
+		constructor Create(AOwner: TComponent); override;
+		destructor Destroy(); override;
+
+		procedure Go();
+	end;
 	TTransaction = class(TSQLTransaction)
 	public
 		constructor Create(AOwner: TComponent); override;
 		destructor Destroy(); override;
 
-		function NewQuery(): TSQLQuery;
+		function CreateQuery(Query: String = ''): TQuery;
 		procedure ExecSQL(Query: String);
 	end;
 	TConnection = record
@@ -24,16 +31,12 @@ type
 		Lock: TCriticalSection;
 		Available: TEvent;
 		Connections: Array of TConnection;
-
-		function GetUserCount(): Integer;
 	public
 		constructor Create(Pools: Integer; Database: String; Host: String; User: String; Password: String);
 		destructor Destroy(); override;
 
 		function Acquire(): TTransaction;
 		procedure Release(Transaction: TTransaction);
-
-		property UserCount: Integer Read GetUserCount;
 	end;
 
 var
@@ -47,6 +50,29 @@ uses
 	PQConnection,
 	P2.Config;
 
+constructor TQuery.Create(AOwner: TComponent);
+begin
+	Inherited;
+end;
+
+destructor TQuery.Destroy();
+begin
+	Inherited;
+end;
+
+procedure TQuery.Go();
+begin
+	Self.Open();
+	if Self.Active then
+	begin
+		while Not(Self.EOF) do
+		begin
+			Self.Next();
+		end;
+	end;
+	Self.Close();
+end;
+
 constructor TTransaction.Create(AOwner: TComponent);
 begin
 	Inherited;
@@ -57,24 +83,26 @@ begin
 	Inherited;
 end;
 
-function TTransaction.NewQuery(): TSQLQuery;
+function TTransaction.CreateQuery(Query: String): TQuery;
 var
-	Q: TSQLQuery;
+	Q: TQuery;
 begin
-	Q := TSQLQuery.Create(Nil);
+	Q := TQuery.Create(Nil);
 
 	Q.SQLConnection := Self.SQLConnection;
 	Q.SQLTransaction := Self;
 	Q.UniDirectional := True;
 
-	NewQuery := Q;
+	Q.SQL.Text := Query;
+
+	CreateQuery := Q;
 end;
 
 procedure TTransaction.ExecSQL(Query: String);
 var
 	Q: TSQLQuery;
 begin
-	Q := Self.NewQuery();
+	Q := Self.CreateQuery();
 
 	Q.SQL.Text := Query;
 	Q.ExecSQL();
@@ -193,37 +221,6 @@ begin
 	finally
 		Self.Lock.Release();
 	end;
-end;
-
-function TPool.GetUserCount(): Integer;
-var
-	T: TTransaction;
-	Q: TSQLQuery;
-begin
-	GetUserCount := 0;
-
-	T := Self.Acquire();
-	Q := T.NewQuery();
-
-	try
-		Q.SQL.Text := 'SELECT * FROM users;';
-		Q.Open();
-		if Q.Active then
-		begin
-			while Not(Q.EOF) do
-			begin
-				GetUserCount := GetUserCount + 1;
-
-				Q.Next();
-			end;
-		end;
-		Q.Close();
-	except
-		// TODO: Do something
-	end;
-
-	Q.Free();
-	Self.Release(T);
 end;
 
 function Init(): Boolean;

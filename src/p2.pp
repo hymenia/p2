@@ -1,11 +1,11 @@
 program p2;
 
-{$linklib libgcc_s.so}
-{$linklib libstdc++.so}
+{$linklib stdc++}
 {$ifdef UNIX}
-{$linklib libm.so}
-{$linklib libc.so}
+{$linklib m}
+{$linklib c}
 {$endif}
+{$linklib gcc_s}
 
 uses
 {$ifdef UNIX}
@@ -15,19 +15,19 @@ uses
 	P2.Config, P2.SQL, P2.HTTP;
 
 begin
-	if not(P2.Config.Init()) then
+	if Not(P2.Config.Init()) then
 	begin
 		WriteLn('Config error. P2 is exiting.');
 		Halt(1);
 	end;
 
-	if not(P2.SQL.Init()) then
+	if Not(P2.SQL.Init()) then
 	begin
 		WriteLn('SQL error. P2 is exiting.');
 		Halt(1);
 	end;
 
-	if not(P2.HTTP.Init()) then
+	if Not(P2.HTTP.Init()) then
 	begin
 		WriteLn('HTTP error. P2 is exiting.');
 		Halt(1);

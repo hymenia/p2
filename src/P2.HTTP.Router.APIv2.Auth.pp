@@ -9,7 +9,7 @@ uses
 	SysUtils, TypInfo,
 	FPJSON, JSONParser,
 	HTTPDefs, HTTPRoute,
-	P2.Altcha, P2.HTTP, P2.JSON;
+	P2.Altcha, P2.HTTP, P2.JSON, P2.User;
 
 procedure RouteRegister(Req: TRequest; Res: TResponse);
 var
@@ -47,6 +47,12 @@ begin
 
 		if Verify = P2.Altcha.Verified then
 		begin
+			if P2.User.Create(JReq.Strings['username'], JReq.Strings['email'], JReq.Strings['password']) then
+			begin
+			end
+			else
+			begin
+			end;
 		end
 		else
 		begin
